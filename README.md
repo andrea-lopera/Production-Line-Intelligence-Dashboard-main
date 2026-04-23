@@ -1,18 +1,18 @@
 # Production Line Intelligence & Rework Risk Modeling
 
-A simulated **multi-stage production line** analytics project for tracking throughput, cycle time, rework, and downtime using **Python**, **PostgreSQL**, **Tableau**, and **machine learning**.  
+A simulated multi-stage production line* analytics project for tracking throughput, cycle time, rework, and downtime using Python, PostgreSQL, Tableau, and machine learning.  
 (Modeled after an architectural glass line, but designed to be transferable to other discrete manufacturing environments.) In addition to analytics and modeling, this project includes end-to-end Lean-aligned improvement recommendations covering flow optimization, standard work, predictive quality, and operational control systems.
 
 ---
 
 ## Project Purpose
 
-This project simulates a **multi-step manufacturing process** (cutting → tempering → framing/assembly) and builds an end-to-end analytics stack around it:
+This project simulates a multi-step manufacturing process (cutting → tempering → framing/assembly) and builds an end-to-end analytics stack around it:
 
 - **Python** to generate realistic production and quality data (JSON + CSV)
 - **PostgreSQL** to model the process with relational tables, joins, and window functions
 - **Tableau** to create operations dashboards
-- **Scikit-learn** to predict **which units will need rework** and **why**
+- **Scikit-learn** to predict which units will need rework and why
 
 **Tools:** `Python` · `pandas` · `NumPy` · `scikit-learn` · `PostgreSQL` · `Tableau`  
 **Skills:** Data simulation · SQL modeling · Feature engineering · Dashboarding · Classification (LogReg, Random Forest)
@@ -68,12 +68,12 @@ One record per unit, focusing on QC:
 
 ## Phase 2: SQL Data Modeling & Feature Engineering (PostgreSQL)
 
-We loaded the simulated data into PostgreSQL to emulate a basic **operations data mart** and do feature engineering in SQL.
+We loaded the simulated data into PostgreSQL to emulate a basic operations data mart and do feature engineering in SQL.
 
 ### Steps
 
-- Created a **staging table** for raw JSON and used `\copy` to load `Production_Logs.json` as text.
-- Parsed the JSON into a clean **`production_logs`** table with columns:
+- Created a staging table for raw JSON and used `\copy` to load `Production_Logs.json` as text.
+- Parsed the JSON into a clean `production_logs` table with columns:
 
   - `prod_timestamp`
   - `unit_id`
@@ -85,7 +85,7 @@ We loaded the simulated data into PostgreSQL to emulate a basic **operations dat
   - `tempering_time`
   - `framing_time`
 
-- Loaded **`Quality_Audit.csv`** into a **`quality_audit`** table:
+- Loaded `Quality_Audit.csv` into a `quality_audit` table:
 
   - `unit_id`
   - `qc_result`
@@ -93,8 +93,8 @@ We loaded the simulated data into PostgreSQL to emulate a basic **operations dat
   - `downtime_minutes`
   - `rework_reason`
 
-- Defined a **foreign key** relationship on `unit_id`.
-- Built a **view** joining production and quality:
+- Defined a foreign key relationship on `unit_id`.
+- Built a view joining production and quality:
 
 ```sql
 CREATE VIEW production_with_qc AS
@@ -159,10 +159,10 @@ Using the joined dataset, we explored relationships between process times, rewor
 
 ### Key Analyses
 
-- Production volume by **shift**, **machine**, and **product category**
-- Distribution of **cycle time** and process times (cutting, tempering, framing)
-- **Rework rate** by product category, shift, and machine
-- Pareto-style distribution of **rework reasons**
+- Production volume by shift, machine, and product category
+- Distribution of cycle time and process times (cutting, tempering, framing)
+- Rework rate by product category, shift, and machine
+- Pareto-style distribution of rework reasons
 - Correlation matrix between:
   - process times  
   - `rework_flag`  
@@ -295,7 +295,7 @@ Categorical variables were one-hot encoded.
 
 ### 5.2 Rework Reason – Grouped Buckets (Random Forest)
 
-For units that failed QC (`rework_flag = 1`), we predict a **high-level rework bucket**:
+For units that failed QC (`rework_flag = 1`), we predict a high-level rework bucket:
 
 - **Dimensional / Assembly Issues**  
 - **Equipment / Human Factors**  
@@ -315,14 +315,14 @@ For units that failed QC (`rework_flag = 1`), we predict a **high-level rework b
 
 **Observations**
 
-- The model reliably distinguishes between **Dimensional / Assembly** vs **Equipment / Human Factors** causes.  
-- **Surface / Material Defects** is rarer and harder to separate, but still meaningfully better than random.  
-- **Machine ID** (especially certain machines) and **process times** are the strongest drivers of which bucket a failed unit falls into.  
+- The model reliably distinguishes between Dimensional / Assembly vs Equipment / Human Factors causes.  
+- Surface / Material Defects is rarer and harder to separate, but still meaningfully better than random.  
+- Machine ID (especially certain machines) and process times are the strongest drivers of which bucket a failed unit falls into.  
 - This structure is generic enough to apply to many factories (e.g., “setup/assembly issues”, “equipment/operator factors”, “material/surface defects”).
 
 **Interpretation**
 
-The model shows that **machine identity + process behavior** can be used to not only predict *whether* a unit will fail, but also **what kind of corrective action is likely needed** (setup/assembly vs equipment/operator vs material).
+The model shows that machine identity + process behavior can be used to not only predict *whether* a unit will fail, but also what kind of corrective action is likely needed (setup/assembly vs equipment/operator vs material).
 
 ---
 
