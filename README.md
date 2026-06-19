@@ -243,6 +243,8 @@ Categorical variables were one-hot encoded.
 
 #### Logistic Regression (class-weighted)
 
+![ROC Curve](plots/roc_lr_rework_risk.png)  
+
 - **Goal:** Interpretable baseline, adjusted for class imbalance.  
 
 **Metrics (rework class):**
