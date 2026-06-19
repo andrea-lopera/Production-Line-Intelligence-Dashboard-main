@@ -243,8 +243,6 @@ Categorical variables were one-hot encoded.
 
 #### Logistic Regression (class-weighted)
 
-![ROC Curve](plots/roc_lr_rework_risk.png)  
-
 - **Goal:** Interpretable baseline, adjusted for class imbalance.  
 
 **Metrics (rework class):**
@@ -254,13 +252,21 @@ Categorical variables were one-hot encoded.
 - Recall ≈ **0.83**  
 - F1 ≈ **0.52**  
 
+**ROC Curve**
+ 
+![ROC Curve Logistic Regression](plots/roc_lr_rework_risk.png)  
+
+**Feature Importance** 
+
+![Feature Importance Logistic Regression](plots/fi_lr_rework_risk.png)
+
 **Interpretation:**
 
 - **Standard vs Custom** and **product family** (e.g., Flooring, Stairs) have clear effects on rework risk.  
 - **Night shift (Shift 3)** shows higher rework probability.  
 - Some machines consistently appear as lower-risk even after controlling for other factors.
-
-#### Random Forest (tuned)
+  
+#### Random Forest (Tuned)
 
 - **Goal:** Maximize recall on rework units and capture non-linear relationships.  
 
@@ -269,9 +275,15 @@ Categorical variables were one-hot encoded.
 - Accuracy ≈ **0.54**  
 - Precision ≈ **0.37**  
 - Recall ≈ **0.91**  
-- F1 ≈ **0.53**  
+- F1 ≈ **0.53**
 
-**Feature importance (top drivers):**
+**ROC Curve**
+
+![ROC Curve Random Forest](plots/roc_rf_rework_risk.png)
+
+**Feature importance (Top Features)**
+
+![Feature Importance Random Forest](plots/fi_rf_rework_risk.png)
 
 - **`cycle_time`** is the dominant driver: longer, more complex jobs fail more often.  
 - **`product_type_Standard`** (negative) and complex categories (Flooring, Stairs) are important secondary signals.  
@@ -314,6 +326,13 @@ For units that failed QC (`rework_flag = 1`), we predict a high-level rework buc
 | Surface / Material Defects     |     0.33  |  0.30  | 0.32 |    204  |
 | **Overall Accuracy**           |           |        | **0.90** |  3122   |
 
+**ROC Curves**
+
+![ROC Curves - RF Rework Reason Buckets](plots/roc_rf_rework_reason.png)
+
+**Feature importance (Top Features)**
+
+![Feature Importance - RF Rework Reason Buckets](plots/fi_rf_rework_reason.png)
 
 **Observations**
 
